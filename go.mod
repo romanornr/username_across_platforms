@@ -1,4 +1,4 @@
-module username_across_platforms
+module github.com/romanornr/username_across_platforms
 
 go 1.13
 
