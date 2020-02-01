@@ -1,6 +1,7 @@
 package client
 
 import (
+	"errors"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
@@ -47,4 +48,16 @@ func TestGetWithRoundTripper_No_Match(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, body)
 	assert.EqualValues(t, http.StatusNotFound, body.StatusCode)
+}
+
+func TestGetWithRoundTripper_Failure(t *testing.T) {
+	client := NewFakeClient(func(req *http.Request) (response *http.Response, e error) {
+		return nil, errors.New("we couldn't access the url provided")
+	})
+	api := clientCall{*client}
+	url := "https://invalid_url/rnr_0"
+	body, err := api.GetValue(url)
+	assert.NotNil(t, err)
+	assert.Nil(t, body)
+	assert.EqualValues(t, "Get https://invalid_url/stevensunflash: we couldn't access the url provided", err.Error())
 }
