@@ -7,7 +7,7 @@ var router = gin.Default()
 func StartApp() {
 	route()
 
-	port := 8080
+	port := "8080"
 
 	router.Run(":" + port)
 }
